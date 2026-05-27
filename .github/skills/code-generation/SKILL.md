@@ -22,7 +22,6 @@ Generate the actual automated test code using RestAssured and TestNG, based on t
 ```java
 package com.hiring.tests;
 
-import com.hiring.base.BaseTest;
 import com.hiring.endpoints.EndPoints;
 import com.hiring.pojo.EntityRequest;
 import io.restassured.response.Response;
@@ -31,21 +30,21 @@ import org.testng.annotations.Test;
 
 public class EntityTest extends BaseTest {
 
-    @Test(description = "Description matching test case")
-    public void testMethodName() {
-        // Arrange
-        EntityRequest payload = new EntityRequest(...);
+   @Test(description = "Description matching test case")
+   public void testMethodName() {
+      // Arrange
+      EntityRequest payload = new EntityRequest(...);
 
-        // Act
-        Response response = request
-            .body(payload)
-            .when()
-            .post(EndPoints.ENDPOINT);
+      // Act
+      Response response = request
+              .body(payload)
+              .when()
+              .post(EndPoints.ENDPOINT);
 
-        // Assert
-        Assert.assertEquals(response.getStatusCode(), 201);
-        Assert.assertNotNull(response.jsonPath().getString("id"));
-    }
+      // Assert
+      Assert.assertEquals(response.getStatusCode(), 201);
+      Assert.assertNotNull(response.jsonPath().getString("id"));
+   }
 }
 ```
 

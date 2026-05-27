@@ -1,0 +1,8 @@
+{
+  "email": "newcandidate@example.com",
+  "password": "password123",
+  "fullName": "John Doe",
+  "phone": "9876543210",
+  "role": "CANDIDATE"
+}
+
