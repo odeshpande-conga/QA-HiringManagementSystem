@@ -22,6 +22,7 @@ import java.util.Map;
 public class ActorHelper {
 
     public RestUtils restUtils;
+    Gson gson = new Gson();
 
     public ActorHelper(RestUtils restUtils) {
         this.restUtils = restUtils;
@@ -33,22 +34,30 @@ public class ActorHelper {
      * Register a new user.
      * Calls POJO's createRegisterPayload() → converts POJO to JSON via Gson → sends to RestUtils.
      */
-    public Response registerUser(HashMap<String, String> testData) {
-        RegisterRequestPOJO registerRequestPOJO = new RegisterRequestPOJO();
-        RegisterRequestPOJO payload = registerRequestPOJO.createRegisterPayload(testData);
-        String jsonBody = new Gson().toJson(payload);
-        return restUtils.post(URLGenerator.AUTH_REGISTER, jsonBody);
+    public Response registerUser(HashMap<String, String> testData) throws Exception {
+        String payload = gson.toJson(new RegisterRequestPOJO().createRegisterPayload(testData));
+        System.out.println("Register Payload: " + payload);
+        Response response = restUtils.post(URLGenerator.AUTH_REGISTER, payload);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Login and get JWT token.
      * Calls POJO's createLoginPayload() → converts POJO to JSON via Gson → sends to RestUtils.
      */
-    public Response loginUser(HashMap<String, String> testData) {
-        LoginRequestPOJO loginRequestPOJO = new LoginRequestPOJO();
-        LoginRequestPOJO payload = loginRequestPOJO.createLoginPayload(testData);
-        String jsonBody = new Gson().toJson(payload);
-        return restUtils.post(URLGenerator.AUTH_LOGIN, jsonBody);
+    public Response loginUser(HashMap<String, String> testData) throws Exception {
+        String payload = gson.toJson(new LoginRequestPOJO().createLoginPayload(testData));
+        System.out.println("Login Payload: " + payload);
+        Response response = restUtils.post(URLGenerator.AUTH_LOGIN, payload);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     // ======================== JOBS APIs ========================
@@ -57,46 +66,69 @@ public class ActorHelper {
      * Create a new job (Recruiter only).
      * Calls POJO's createJobPayload() → converts POJO to JSON via Gson → sends to RestUtils.
      */
-    public Response createJob(HashMap<String, String> testData) {
-        JobRequestPOJO jobRequestPOJO = new JobRequestPOJO();
-        JobRequestPOJO payload = jobRequestPOJO.createJobPayload(testData);
-        String jsonBody = new Gson().toJson(payload);
-        return restUtils.post(URLGenerator.JOBS, jsonBody);
+    public Response createJob(HashMap<String, String> testData) throws Exception {
+        String payload = gson.toJson(new JobRequestPOJO().createJobPayload(testData));
+        System.out.println("Job Payload: " + payload);
+        Response response = restUtils.post(URLGenerator.JOBS, payload);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Update a job by ID.
      * Calls POJO's createJobPayload() → converts POJO to JSON via Gson → sends to RestUtils.
      */
-    public Response updateJob(String jobId, HashMap<String, String> testData) {
-        JobRequestPOJO jobRequestPOJO = new JobRequestPOJO();
-        JobRequestPOJO payload = jobRequestPOJO.createJobPayload(testData);
-        String jsonBody = new Gson().toJson(payload);
+    public Response updateJob(String jobId, HashMap<String, String> testData) throws Exception {
+        String payload = gson.toJson(new JobRequestPOJO().createJobPayload(testData));
+        System.out.println("Update Job Payload: " + payload);
         String url = RestUtils.replacePathParam(URLGenerator.JOB_BY_ID, "id", jobId);
-        return restUtils.put(url, jsonBody);
+        Response response = restUtils.put(url, payload);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Get all active jobs.
      */
-    public Response getAllJobs() {
-        return restUtils.get(URLGenerator.JOBS);
+    public Response getAllJobs() throws Exception {
+        Response response = restUtils.get(URLGenerator.JOBS);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Get job by ID.
      */
-    public Response getJobById(String jobId) {
+    public Response getJobById(String jobId) throws Exception {
         String url = RestUtils.replacePathParam(URLGenerator.JOB_BY_ID, "id", jobId);
-        return restUtils.get(url);
+        Response response = restUtils.get(url);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Delete a job by ID.
      */
-    public Response deleteJob(String jobId) {
+    public Response deleteJob(String jobId) throws Exception {
         String url = RestUtils.replacePathParam(URLGenerator.JOB_BY_ID, "id", jobId);
-        return restUtils.delete(url);
+        Response response = restUtils.delete(url);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     // ======================== APPLICATIONS APIs ========================
@@ -105,36 +137,55 @@ public class ActorHelper {
      * Apply for a job (Candidate only).
      * Calls POJO's createApplicationPayload() → converts POJO to JSON via Gson → sends to RestUtils.
      */
-    public Response applyForJob(HashMap<String, String> testData) {
-        ApplicationRequestPOJO applicationRequestPOJO = new ApplicationRequestPOJO();
-        ApplicationRequestPOJO payload = applicationRequestPOJO.createApplicationPayload(testData);
-        String jsonBody = new Gson().toJson(payload);
-        return restUtils.post(URLGenerator.APPLICATIONS, jsonBody);
+    public Response applyForJob(HashMap<String, String> testData) throws Exception {
+        String payload = gson.toJson(new ApplicationRequestPOJO().createApplicationPayload(testData));
+        System.out.println("Application Payload: " + payload);
+        Response response = restUtils.post(URLGenerator.APPLICATIONS, payload);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Get my applications (Candidate only).
      */
-    public Response getMyApplications() {
-        return restUtils.get(URLGenerator.MY_APPLICATIONS);
+    public Response getMyApplications() throws Exception {
+        Response response = restUtils.get(URLGenerator.MY_APPLICATIONS);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Get applicants for a job (Recruiter only).
      */
-    public Response getApplicationsByJob(String jobId) {
+    public Response getApplicationsByJob(String jobId) throws Exception {
         String url = RestUtils.replacePathParam(URLGenerator.APPLICATIONS_BY_JOB, "jobId", jobId);
-        return restUtils.get(url);
+        Response response = restUtils.get(url);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Update application status (e.g., PENDING, REVIEWED, SHORTLISTED, REJECTED, ACCEPTED).
      */
-    public Response updateApplicationStatus(String applicationId, String status) {
+    public Response updateApplicationStatus(String applicationId, String status) throws Exception {
         String url = RestUtils.replacePathParam(URLGenerator.APPLICATION_STATUS, "id", applicationId);
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("status", status);
-        return restUtils.putWithQueryParams(url, queryParams);
+        Response response = restUtils.putWithQueryParams(url, queryParams);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     // ======================== USER PROFILE APIs ========================
@@ -142,19 +193,28 @@ public class ActorHelper {
     /**
      * Get current user profile.
      */
-    public Response getUserProfile() {
-        return restUtils.get(URLGenerator.USER_PROFILE);
+    public Response getUserProfile() throws Exception {
+        Response response = restUtils.get(URLGenerator.USER_PROFILE);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Update user profile.
      * Calls POJO's createUserProfilePayload() → converts POJO to JSON via Gson → sends to RestUtils.
      */
-    public Response updateUserProfile(HashMap<String, String> testData) {
-        UserProfileRequestPOJO userProfileRequestPOJO = new UserProfileRequestPOJO();
-        UserProfileRequestPOJO payload = userProfileRequestPOJO.createUserProfilePayload(testData);
-        String jsonBody = new Gson().toJson(payload);
-        return restUtils.put(URLGenerator.USER_PROFILE, jsonBody);
+    public Response updateUserProfile(HashMap<String, String> testData) throws Exception {
+        String payload = gson.toJson(new UserProfileRequestPOJO().createUserProfilePayload(testData));
+        System.out.println("Profile Payload: " + payload);
+        Response response = restUtils.put(URLGenerator.USER_PROFILE, payload);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     // ======================== FILE UPLOAD API ========================
@@ -162,8 +222,13 @@ public class ActorHelper {
     /**
      * Upload resume (multipart/form-data).
      */
-    public Response uploadResume(String filePath) {
-        return restUtils.uploadFile(URLGenerator.UPLOAD_RESUME, filePath, "resume");
+    public Response uploadResume(String filePath) throws Exception {
+        Response response = restUtils.uploadFile(URLGenerator.UPLOAD_RESUME, filePath, "resume");
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     // ======================== ADMIN APIs ========================
@@ -171,15 +236,25 @@ public class ActorHelper {
     /**
      * List all users (Admin only).
      */
-    public Response getAllUsers() {
-        return restUtils.get(URLGenerator.ADMIN_USERS);
+    public Response getAllUsers() throws Exception {
+        Response response = restUtils.get(URLGenerator.ADMIN_USERS);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 
     /**
      * Delete a user by ID (Admin only).
      */
-    public Response deleteUser(String userId) {
+    public Response deleteUser(String userId) throws Exception {
         String url = RestUtils.replacePathParam(URLGenerator.ADMIN_USER_BY_ID, "id", userId);
-        return restUtils.delete(url);
+        Response response = restUtils.delete(url);
+        response.prettyPrint();
+        if (response.getStatusCode() != 200) {
+            throw new Exception("Failure");
+        }
+        return response;
     }
 }

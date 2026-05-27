@@ -19,28 +19,29 @@ public class URLGenerator {
         }
         BASE_URL = properties.getProperty("base.url");
     }
+
     // ==================== Authentication APIs ====================
-    public static final String AUTH_REGISTER = "/api/auth/register";
-    public static final String AUTH_LOGIN = "/api/auth/login";
+    public static final String AUTH_REGISTER = BASE_URL + "/api/auth/register";
+    public static final String AUTH_LOGIN = BASE_URL + "/api/auth/login";
 
     // ==================== Jobs APIs ====================
-    public static final String JOBS = "/api/jobs";
-    public static final String JOB_BY_ID = "/api/jobs/{id}";
+    public static final String JOBS = BASE_URL + "/api/jobs";
+    public static final String JOB_BY_ID = BASE_URL + "/api/jobs/{id}";
 
     // ==================== Applications APIs ====================
-    public static final String APPLICATIONS = "/api/applications";
-    public static final String MY_APPLICATIONS = "/api/applications/my";
-    public static final String APPLICATIONS_BY_JOB = "/api/applications/job/{jobId}";
-    public static final String APPLICATION_STATUS = "/api/applications/{id}/status";
+    public static final String APPLICATIONS = BASE_URL + "/api/applications";
+    public static final String MY_APPLICATIONS = BASE_URL + "/api/applications/my";
+    public static final String APPLICATIONS_BY_JOB = BASE_URL + "/api/applications/job/{jobId}";
+    public static final String APPLICATION_STATUS = BASE_URL + "/api/applications/{id}/status";
 
     // ==================== User Profile APIs ====================
-    public static final String USER_PROFILE = "/api/users/profile";
+    public static final String USER_PROFILE = BASE_URL + "/api/users/profile";
 
     // ==================== File Upload API ====================
-    public static final String UPLOAD_RESUME = "/api/upload/resume";
+    public static final String UPLOAD_RESUME = BASE_URL + "/api/upload/resume";
 
     // ==================== Admin APIs ====================
-    public static final String ADMIN_USERS = "/api/admin/users";
-    public static final String ADMIN_USER_BY_ID = "/api/admin/users/{id}";
+    public static final String ADMIN_USERS = BASE_URL + "/api/admin/users";
+    public static final String ADMIN_USER_BY_ID = BASE_URL + "/api/admin/users/{id}";
 
 }

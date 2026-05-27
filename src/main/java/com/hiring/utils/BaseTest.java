@@ -25,20 +25,7 @@ public class BaseTest {
     public static RestUtils restUtils;
     public ActorHelper actorHelper;
 
-    @BeforeClass
-    public void setUp() {
-        loadProperties();
-        RestAssured.baseURI = properties.getProperty("base.url");
 
-        // Generate access token using default candidate credentials
-        accessToken = generateAccessToken(
-                properties.getProperty("candidate.email"),
-                properties.getProperty("candidate.password")
-        );
-
-        // Initialize RestUtils with the access token
-        restUtils = new RestUtils(accessToken);
-    }
 
     /**
      * Setup method to initialize RestUtils with a specific role token.
@@ -47,6 +34,7 @@ public class BaseTest {
      * @param role the role: "ADMIN", "RECRUITER", or "CANDIDATE"
      */
     public String setUpWithRole(String role) {
+        this.properties = loadProperties();
         switch (role.toUpperCase()) {
             case "ADMIN":
                 accessToken = getAdminToken();
@@ -82,17 +70,20 @@ public class BaseTest {
 
         Response response = RestAssured.given()
                 .header("Content-Type", "application/json")
+                .log().all()
                 .body("{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}")
                 .when()
                 .post(baseUrl + "/api/auth/login");
 
+        response.prettyPrint();
         if (response.getStatusCode() != 200) {
             throw new RuntimeException("Login failed for user: " + email
                     + " | Status: " + response.getStatusCode()
                     + " | Response: " + response.getBody().asString());
         }
 
-        return response.jsonPath().getString("token");
+        String accessToken = response.jsonPath().getString("data.token");
+        return accessToken;
     }
 
     public static String getAdminToken() {
@@ -109,12 +100,13 @@ public class BaseTest {
 
     // ======================== HELPER METHODS ========================
 
-    private void loadProperties() {
+    private Properties loadProperties() {
         properties = new Properties();
         try {
             FileInputStream fis = new FileInputStream("src/main/resources/testdata/config.properties");
             properties.load(fis);
             fis.close();
+            return  properties;
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config.properties: " + e.getMessage());
         }
